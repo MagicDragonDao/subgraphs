@@ -1,0 +1,23 @@
+{
+  "name": "fiery-subgraphs",
+  "version": "1.0.0",
+  "description": "Treasure.lol / Bridgeworld Subgraphs",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "subgraphs/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MagicDragonDao/fiery-subgraphs.git"
+  },
+  "author": "ohmoy",
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "^0.26.0",
+    "@graphprotocol/graph-ts": "^0.24.1",
+    "matchstick-as": "^0.3.0"
+  }
+}
