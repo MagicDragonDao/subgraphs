@@ -25,6 +25,7 @@ type Staker @entity {
 type DayData @entity {
   id: ID!
   date: Int!
+  tvl: BigDecimal!
   deposited: BigDecimal!
   withdrawn: BigDecimal!
   claimed: BigDecimal!

@@ -56,3 +56,9 @@ export function updateTvl(staker: Staker): void {
     .minus(staker.withdrawn)
     .minus(staker.claimed);
 }
+
+export function snapshotTvl(staker: Staker, dayData: DayData): void {
+  if (staker.tvl > dayData.tvl) {
+    dayData.tvl = staker.tvl;
+  }
+}

@@ -9,6 +9,7 @@ import {
   loadDayData,
   loadStaker,
   loadWallet,
+  snapshotTvl,
   updateTvl,
 } from "./utils/entities";
 import { DENOM_MAGIC_BD } from "./utils/constants";
@@ -27,6 +28,7 @@ export function handleMineHarvest(event: MineHarvest): void {
   const dayData = loadDayData(event.block.timestamp);
   dayData.earnedRewards = dayData.earnedRewards.plus(fees);
   dayData.earnedFees = dayData.earnedFees.plus(fees);
+  snapshotTvl(staker, dayData);
   dayData.save();
 }
 
@@ -52,6 +54,7 @@ export function handleUserClaim(event: UserClaim): void {
 
   const dayData = loadDayData(event.block.timestamp);
   dayData.claimed = dayData.claimed.plus(amount);
+  snapshotTvl(staker, dayData);
   dayData.save();
 }
 
@@ -70,6 +73,7 @@ export function handleUserDeposit(event: UserDeposit): void {
 
   const dayData = loadDayData(event.block.timestamp);
   dayData.deposited = dayData.deposited.plus(amount);
+  snapshotTvl(staker, dayData);
   dayData.save();
 }
 
@@ -88,5 +92,6 @@ export function handleUserWithdraw(event: UserWithdraw): void {
 
   const dayData = loadDayData(event.block.timestamp);
   dayData.withdrawn = dayData.withdrawn.plus(amount);
+  snapshotTvl(staker, dayData);
   dayData.save();
 }
