@@ -1,8 +1,8 @@
 type Wallet @entity {
   id: ID!
-  deposited: BigInt!
-  withdrawn: BigInt!
-  claimed: BigInt!
+  deposited: BigDecimal!
+  withdrawn: BigDecimal!
+  claimed: BigDecimal!
 }
 
 type Staker @entity {
@@ -14,20 +14,21 @@ type Staker @entity {
 
   # All Time Stats
   numStakersAllTime: Int!
-  deposited: BigInt!
-  withdrawn: BigInt!
-  claimed: BigInt!
-  earnedRewards: BigInt!
-  earnedFees: BigInt!
+  deposited: BigDecimal!
+  withdrawn: BigDecimal!
+  claimed: BigDecimal!
+  earnedRewards: BigDecimal!
+  earnedFees: BigDecimal!
+  tvl: BigDecimal!
 }
 
 type DayData @entity {
   id: ID!
   date: Int!
-  deposited: BigInt!
-  withdrawn: BigInt!
-  claimed: BigInt!
-  earnedRewards: BigInt!
-  earnedFees: BigInt!
+  deposited: BigDecimal!
+  withdrawn: BigDecimal!
+  claimed: BigDecimal!
+  earnedRewards: BigDecimal!
+  earnedFees: BigDecimal!
   numStakers: Int!
 }

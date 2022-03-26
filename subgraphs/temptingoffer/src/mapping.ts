@@ -5,15 +5,23 @@ import {
   UserDeposit,
   UserWithdraw,
 } from "../generated/AtlasMineStaker/AtlasMineStaker";
-import { loadDayData, loadStaker, loadWallet } from "./utils/entities";
+import {
+  loadDayData,
+  loadStaker,
+  loadWallet,
+  updateTvl,
+} from "./utils/entities";
+import { DECIMALS_MAGIC_BD } from "./utils/constants";
+const denom = DECIMALS_MAGIC_BD;
 
 export function handleMineHarvest(event: MineHarvest): void {
   const staker = loadStaker();
-  const rewards = event.params.earned;
-  const fees = event.params.feeEarned;
+  const rewards = event.params.earned.toBigDecimal().div(denom);
+  const fees = event.params.feeEarned.toBigDecimal().div(denom);
 
   staker.earnedRewards = staker.earnedRewards.plus(rewards);
   staker.earnedFees = staker.earnedFees.plus(fees);
+  updateTvl(staker);
   staker.save();
 
   const dayData = loadDayData(event.block.timestamp);
@@ -31,7 +39,7 @@ export function handleSetFee(event: SetFee): void {
 
 export function handleUserClaim(event: UserClaim): void {
   const id = event.params.user.toHexString();
-  const amount = event.params.reward;
+  const amount = event.params.reward.toBigDecimal().div(denom);
   const wallet = loadWallet(id, event.block.timestamp);
 
   wallet.claimed = wallet.claimed.plus(amount);
@@ -39,6 +47,7 @@ export function handleUserClaim(event: UserClaim): void {
 
   const staker = loadStaker();
   staker.claimed = staker.claimed.plus(amount);
+  updateTvl(staker);
   staker.save();
 
   const dayData = loadDayData(event.block.timestamp);
@@ -48,7 +57,7 @@ export function handleUserClaim(event: UserClaim): void {
 
 export function handleUserDeposit(event: UserDeposit): void {
   const id = event.params.user.toHexString();
-  const amount = event.params.amount;
+  const amount = event.params.amount.toBigDecimal().div(denom);
   const wallet = loadWallet(id, event.block.timestamp);
 
   wallet.deposited = wallet.deposited.plus(amount);
@@ -56,6 +65,7 @@ export function handleUserDeposit(event: UserDeposit): void {
 
   const staker = loadStaker();
   staker.deposited = staker.deposited.plus(amount);
+  updateTvl(staker);
   staker.save();
 
   const dayData = loadDayData(event.block.timestamp);
@@ -65,7 +75,7 @@ export function handleUserDeposit(event: UserDeposit): void {
 
 export function handleUserWithdraw(event: UserWithdraw): void {
   const id = event.params.user.toHexString();
-  const amount = event.params.amount;
+  const amount = event.params.amount.toBigDecimal().div(denom);
   const wallet = loadWallet(id, event.block.timestamp);
 
   wallet.withdrawn = wallet.withdrawn.plus(amount);
@@ -73,6 +83,7 @@ export function handleUserWithdraw(event: UserWithdraw): void {
 
   const staker = loadStaker();
   staker.withdrawn = staker.withdrawn.plus(amount);
+  updateTvl(staker);
   staker.save();
 
   const dayData = loadDayData(event.block.timestamp);

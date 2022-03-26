@@ -1,19 +1,6 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import {
-  AtlasMineStaker,
-  MineHarvest,
-  MineStake,
-  OwnershipTransferred,
-  SetFee,
-  StakeNFT,
-  StakingPauseToggle,
-  UnstakeNFT,
-  UserClaim,
-  UserDeposit,
-  UserWithdraw,
-} from "../../generated/AtlasMineStaker/AtlasMineStaker";
 import { Wallet, Staker, DayData } from "../../generated/schema";
-import { ADDRESS_STAKER, BI_ONE, ID_STAKER } from "./constants";
+import { ADDRESS_STAKER, ID_STAKER } from "./constants";
 
 export function loadStaker(): Staker {
   let staker = Staker.load(ID_STAKER);
@@ -61,4 +48,11 @@ export function loadDayData(timestamp: BigInt): DayData {
   }
 
   return data;
+}
+
+export function updateTvl(staker: Staker): void {
+  staker.tvl = staker.deposited
+    .plus(staker.earnedRewards)
+    .minus(staker.withdrawn)
+    .minus(staker.claimed);
 }
