@@ -1,0 +1,37 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: AtlasMineStaker
+    network: arbitrum-one
+    source:
+      address: "0xA094629baAE6aF0C43F17F434B975337cBDb3C42"
+      startBlock: 8281379
+      abi: AtlasMineStaker
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - MineHarvest
+        - MineStake
+        - SetFee
+        - UserClaim
+        - UserDeposit
+        - UserWithdraw
+      abis:
+        - name: AtlasMineStaker
+          file: ./abis/AtlasMineStaker.json
+      eventHandlers:
+        - event: MineHarvest(uint256,uint256)
+          handler: handleMineHarvest
+        - event: SetFee(uint256)
+          handler: handleSetFee
+        - event: UserClaim(indexed address,indexed uint256,uint256)
+          handler: handleUserClaim
+        - event: UserDeposit(indexed address,uint256)
+          handler: handleUserDeposit
+        - event: UserWithdraw(indexed address,indexed uint256,uint256,uint256)
+          handler: handleUserWithdraw
+      file: ./src/mapping.ts

@@ -1,10 +1,11 @@
 {
-  "name": "fiery-subgraphs",
+  "name": "@magicdragondao/fiery-subgraphs",
   "version": "1.0.0",
-  "description": "Treasure.lol / Bridgeworld Subgraphs",
+  "description": "Magic Dragon DAO Subgraphs",
   "license": "MIT",
   "private": true,
   "workspaces": [
+    "packages/*",
     "subgraphs/*"
   ],
   "scripts": {
