@@ -11,8 +11,8 @@ import {
   loadWallet,
   updateTvl,
 } from "./utils/entities";
-import { DECIMALS_MAGIC_BD } from "./utils/constants";
-const denom = DECIMALS_MAGIC_BD;
+import { DENOM_MAGIC_BD } from "./utils/constants";
+const denom = DENOM_MAGIC_BD;
 
 export function handleMineHarvest(event: MineHarvest): void {
   const staker = loadStaker();
