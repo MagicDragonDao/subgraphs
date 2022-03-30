@@ -1,6 +1,6 @@
 import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 
-export const BI_ONE = BigInt.fromI32(0);
+export const BI_ONE = BigInt.fromI32(1);
 
 export const ID_STAKER = "staker";
 export const ADDRESS_STAKER = "0xA094629baAE6aF0C43F17F434B975337cBDb3C42";
