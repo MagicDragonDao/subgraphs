@@ -26,7 +26,7 @@ export function handleMineHarvest(event: MineHarvest): void {
   staker.save();
 
   const dayData = loadDayData(event.block.timestamp);
-  dayData.earnedRewards = dayData.earnedRewards.plus(fees);
+  dayData.earnedRewards = dayData.earnedRewards.plus(rewards);
   dayData.earnedFees = dayData.earnedFees.plus(fees);
   snapshotTvl(staker, dayData);
   dayData.save();
