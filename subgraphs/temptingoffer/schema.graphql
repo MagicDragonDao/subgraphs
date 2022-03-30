@@ -1,5 +1,6 @@
 type Wallet @entity {
   id: ID!
+  depositCount: BigInt!
   deposited: BigDecimal!
   withdrawn: BigDecimal!
   claimed: BigDecimal!

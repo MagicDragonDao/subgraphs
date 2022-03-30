@@ -12,7 +12,7 @@ import {
   snapshotTvl,
   updateTvl,
 } from "./utils/entities";
-import { DENOM_MAGIC_BD } from "./utils/constants";
+import { DENOM_MAGIC_BD, BI_ONE } from "./utils/constants";
 const denom = DENOM_MAGIC_BD;
 
 export function handleMineHarvest(event: MineHarvest): void {
@@ -63,6 +63,7 @@ export function handleUserDeposit(event: UserDeposit): void {
   const amount = event.params.amount.toBigDecimal().div(denom);
   const wallet = loadWallet(id, event.block.timestamp);
 
+  wallet.depositCount = wallet.depositCount.plus(BI_ONE);
   wallet.deposited = wallet.deposited.plus(amount);
   wallet.save();
 
