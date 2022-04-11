@@ -7,12 +7,13 @@ import {
 } from "../generated/AtlasMineStaker/AtlasMineStaker";
 import {
   loadDayData,
+  loadDepositWithdrawEvent,
   loadStaker,
   loadWallet,
   snapshotTvl,
   updateTvl,
 } from "./utils/entities";
-import { DENOM_MAGIC_BD, BI_ONE } from "./utils/constants";
+import { DENOM_MAGIC_BD, BI_ONE, BI_NONE } from "./utils/constants";
 const denom = DENOM_MAGIC_BD;
 
 export function handleMineHarvest(event: MineHarvest): void {
@@ -76,6 +77,15 @@ export function handleUserDeposit(event: UserDeposit): void {
   dayData.deposited = dayData.deposited.plus(amount);
   snapshotTvl(staker, dayData);
   dayData.save();
+
+  const depositWithdraw = loadDepositWithdrawEvent(
+    event.transaction,
+    event.logIndex,
+    event.block
+  );
+
+  depositWithdraw.amount = event.params.amount;
+  depositWithdraw.save();
 }
 
 export function handleUserWithdraw(event: UserWithdraw): void {
@@ -95,4 +105,13 @@ export function handleUserWithdraw(event: UserWithdraw): void {
   dayData.withdrawn = dayData.withdrawn.plus(amount);
   snapshotTvl(staker, dayData);
   dayData.save();
+
+  const depositWithdraw = loadDepositWithdrawEvent(
+    event.transaction,
+    event.logIndex,
+    event.block
+  );
+
+  depositWithdraw.amount = event.params.amount.times(BI_NONE);
+  depositWithdraw.save();
 }

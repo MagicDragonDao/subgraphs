@@ -34,3 +34,12 @@ type DayData @entity {
   earnedFees: BigDecimal!
   numStakers: Int!
 }
+
+type DepositWithdrawEvent @entity {
+  id: ID! # tx-index
+  tx: String!
+  block: BigInt!
+  timestamp: BigInt!
+  logIndex: BigInt!
+  amount: BigInt!
+}

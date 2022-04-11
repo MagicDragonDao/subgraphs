@@ -1,5 +1,10 @@
-import { BigInt } from "@graphprotocol/graph-ts";
-import { Wallet, Staker, DayData } from "../../generated/schema";
+import { BigInt, ethereum } from "@graphprotocol/graph-ts";
+import {
+  Wallet,
+  Staker,
+  DayData,
+  DepositWithdrawEvent,
+} from "../../generated/schema";
 import { ADDRESS_STAKER, ID_STAKER } from "./constants";
 
 export function loadStaker(): Staker {
@@ -53,6 +58,7 @@ export function loadDayData(timestamp: BigInt): DayData {
 export function updateTvl(staker: Staker): void {
   staker.tvl = staker.deposited
     .plus(staker.earnedRewards)
+    .plus(staker.earnedFees)
     .minus(staker.withdrawn)
     .minus(staker.claimed);
 }
@@ -61,4 +67,23 @@ export function snapshotTvl(staker: Staker, dayData: DayData): void {
   if (staker.tvl > dayData.tvl) {
     dayData.tvl = staker.tvl;
   }
+}
+
+export function loadDepositWithdrawEvent(
+  tx: ethereum.Transaction,
+  logIndex: BigInt,
+  block: ethereum.Block
+): DepositWithdrawEvent {
+  const txHash = tx.hash.toHexString();
+  const id = `${txHash}-${logIndex.toString()}`;
+  let entity = DepositWithdrawEvent.load(id);
+  if (entity == null) {
+    entity = new DepositWithdrawEvent(id);
+    entity.block = block.number;
+    entity.timestamp = block.timestamp;
+    entity.tx = txHash;
+    entity.logIndex = logIndex;
+  }
+
+  return entity;
 }
